@@ -14,6 +14,10 @@ Change Log
 Unreleased
 ~~~~~~~~~~
 
+[3.7.16] - 2021-03-26
+~~~~~~~~~~~~~~~~~~~~~
+* Switched from jsonfield2 to jsonfield as the earlier one has archived and merged back in the latter one.
+
 [3.7.15] - 2021-03-24
 ~~~~~~~~~~~~~~~~~~~~~
 * Improved learner messaging on onboarding panel and submitted interstitial.

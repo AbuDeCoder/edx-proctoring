@@ -63,7 +63,7 @@ django==2.2.19
     #   edx-drf-extensions
     #   edx-when
     #   event-tracking
-    #   jsonfield2
+    #   jsonfield
     #   rest-condition
 djangorestframework==3.12.2
     # via
@@ -99,10 +99,8 @@ future==0.18.2
     # via pyjwkest
 idna==2.10
     # via requests
-jsonfield2==3.0.3
-    # via
-    #   -c requirements/constraints.txt
-    #   -r requirements/base.in
+jsonfield==3.1.0
+    # via -r requirements/base.in
 kombu==5.0.2
     # via celery
 lxml==4.6.3
