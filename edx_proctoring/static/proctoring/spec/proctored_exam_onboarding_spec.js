@@ -45,6 +45,7 @@ describe('ProctoredExamOnboardingView', function() {
 
     beforeEach(function() {
         html = '<div class="wrapper-content wrapper">' +
+        '<h3 class="error-response" id="error-response"></h3>' +
         '<% var isOnboardingItems = onboardingItems.length !== 0 %>' +
         '<div class="content onboarding-status-content">' +
         '<div class="top-header">' +
@@ -368,6 +369,7 @@ describe('ProctoredExamOnboardingView', function() {
                 JSON.stringify(expectedOnboardingDataJson)
             ]
         );
+
         this.proctored_exam_onboarding_view = new edx.instructor_dashboard.proctoring.ProctoredExamOnboardingView();
 
         this.server.respond();
@@ -385,5 +387,21 @@ describe('ProctoredExamOnboardingView', function() {
             .toContain('Rejected');
         expect(this.proctored_exam_onboarding_view.$el.find('.status-checkboxes').html())
             .not.toContain('Setup Started');
+    });
+
+    it('renders correctly with 503 response', function() {
+        this.server.respondWith('GET', '/api/edx_proctoring/v1/user_onboarding/status/course_id/test_course_id',
+            [
+                503,
+                {
+                    'Content-Type': 'application/json'
+                },
+                JSON.stringify({detail: 'Error message.'})
+            ]
+        );
+
+        expect(this.proctored_exam_onboarding_view.$el.find('.error-response').html())
+            .toContain('Error message.');
+        expect(this.proctored_exam_onboarding_view.$el.find('.error-response').is(':hidden'));
     });
 });

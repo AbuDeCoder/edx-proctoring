@@ -1910,7 +1910,7 @@ class TestStudentOnboardingStatusByCourseView(ProctoredExamTestCase):
     def test_instructor_onboarding_with_403_api_response(self, mocked_onboarding_api,
                                                          mocked_switch_is_active, mock_logger):
         """
-        Test that internal logic is used if proctoring backend api endpoint returns non 200 response
+        Test that internal logic is used if proctoring backend api endpoint returns non 200 response.
         """
         mocked_switch_is_active.return_value = True
 
@@ -1925,37 +1925,10 @@ class TestStudentOnboardingStatusByCourseView(ProctoredExamTestCase):
 
         mocked_onboarding_api.assert_called()
 
-        expected_data = {
-            'results': [
-                {
-                    'username': self.user.username,
-                    'enrollment_mode': self.enrollment_modes[0],
-                    'status': InstructorDashboardOnboardingAttemptStatus.not_started,
-                    'modified': None,
-                },
-                {
-                    'username': self.learner_1.username,
-                    'enrollment_mode': self.enrollment_modes[1],
-                    'status': InstructorDashboardOnboardingAttemptStatus.not_started,
-                    'modified': None,
-                },
-                {
-                    'username': self.learner_2.username,
-                    'enrollment_mode': self.enrollment_modes[2],
-                    'status': InstructorDashboardOnboardingAttemptStatus.not_started,
-                    'modified': None,
-                }
-            ],
-            'count': 3,
-            'previous': None,
-            'next': None,
-            'num_pages': 1,
-        }
-
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 503)
         response_data = json.loads(response.content.decode('utf-8'))
-        self.assertEqual(response_data, expected_data)
-        mock_logger.assert_not_called()
+        self.assertEqual(response_data, {'detail': 'The onboarding service is temporarily unavailable. Please try again later.'})
+        mock_logger.assert_called()
 
     @patch('logging.Logger.error')
     @patch('edx_proctoring.views.waffle.switch_is_active')

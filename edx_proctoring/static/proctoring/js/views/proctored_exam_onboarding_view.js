@@ -77,6 +77,7 @@ edx = edx || {};
             this.searchText = '';
             this.filters = [];
             this.currentPage = 1;
+            this.errorDetail = null;
 
             /* re-render if the model changes */
             this.listenTo(this.collection, 'change', this.collectionChanged);
@@ -196,11 +197,19 @@ edx = edx || {};
                     $searchIcon = $(document.getElementById('onboarding-search-indicator'));
                     $searchIcon.removeClass('hidden');
                 },
-                error: function() {
+                error: function(unused, response) {
+                    var data, $searchIcon, $spinner, $errorResponse, $onboardingPanel;
+                    data = $.parseJSON(response.responseText);
+
                     // in the case that there is no onboarding data, we
                     // still want the view to render
-                    var $searchIcon, $spinner;
                     self.render();
+
+                    $errorResponse = $('#error-response');
+                    $errorResponse.html(data.detail);
+                    $onboardingPanel = $('.onboarding-status-content');
+                    $onboardingPanel.hide();
+
                     $spinner = $(document.getElementById('onboarding-loading-indicator'));
                     $spinner.addClass('hidden');
                     $searchIcon = $(document.getElementById('onboarding-search-indicator'));

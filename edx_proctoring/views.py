@@ -793,21 +793,10 @@ class StudentOnboardingStatusByCourseView(ProctoredAPIView):
                 )
                 LOG.warning(log_message)
 
-                onboarding_data = self._get_onboarding_info_no_onboarding_api(
-                    course_id,
-                    onboarding_exam,
-                    users,
-                    enrollment_modes_by_user_id,
+                return Response(
+                    status=status.HTTP_503_SERVICE_UNAVAILABLE,
+                    data={'detail': _('The onboarding service is temporarily unavailable. Please try again later.')}
                 )
-                onboarding_data = self._filter_onboarding_data_by_status_filters(onboarding_data, status_filters)
-                query_params = self._get_query_params(text_search, status_filters)
-                paginated_data = self._paginate_data(
-                    onboarding_data,
-                    data_page,
-                    onboarding_exam.course_id,
-                    query_params
-                )
-                return Response(paginated_data)
 
             obscured_user_ids_to_users = {obscured_user_id(user.id, onboarding_exam.backend): user for user in users}
 
