@@ -400,6 +400,8 @@ describe('ProctoredExamOnboardingView', function() {
             ]
         );
 
+        this.proctored_exam_onboarding_view = new edx.instructor_dashboard.proctoring.ProctoredExamOnboardingView();
+
         expect(this.proctored_exam_onboarding_view.$el.find('.error-response').html())
             .toContain('Error message.');
         expect(this.proctored_exam_onboarding_view.$el.find('.error-response').is(':hidden'));
